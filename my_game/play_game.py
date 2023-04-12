@@ -1,211 +1,17 @@
 import pygame
 import time
-import os 
+from img import *
+from object import *
+from button import *
+from sound import *
+from config import *
+from fonts import *
 
-# размеры поля
-WIDTH = 1050
-HEIGHT = 800
-FPS = 30
 
-#Создаем игру и окно
 pygame.init()
-pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Морской бой")
-clock = pygame.time.Clock()
-
-
-# Задаем цвета
-MIDNIGTHBLUE = (25, 25, 112)
-WHITE = (255, 255, 255)
-GREY = (128, 128, 128)
-LIGHTBLUE = (0, 206, 209 )
-LIGHTYELLOW = (255, 255, 224)
-YELLOW = (255, 255, 0)
-BLACK = (0, 0, 0)
-LIGHTCORAL = (240, 128, 128)
-RED = (255, 0, 0)
-CORNSILK = (255, 248, 220)
-
-#путь к файлам
-game_folder = os.path.dirname(__file__)
-
-#шрифты
-main = pygame.font.Font(os.path.join(game_folder, 'text', 'main.ttf'), 32)
-text_button = pygame.font.Font(os.path.join(game_folder, 'text', 'main.ttf'), 40)
-title = pygame.font.Font(os.path.join(game_folder, 'text', 'title.ttf'), 80)
-subtitle = pygame.font.Font(os.path.join(game_folder, 'text', 'title.ttf'), 60)
-big = pygame.font.Font(os.path.join(game_folder, 'text', 'title.ttf'), 120)
-
-
-#этап игры
-NUMBER_TURNE = 0
-
-CARD_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'card.png')).convert()
-CARD_IMG = pygame.transform.scale(CARD_IMG, (WIDTH, HEIGHT))
-
-BACKGROUND_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'background.png')).convert()
-BACKGROUND_IMG = pygame.transform.scale(BACKGROUND_IMG, (WIDTH, HEIGHT))
-
-WATER_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'water.png')).convert()
-WATER_IMG = pygame.transform.scale(WATER_IMG, (50, 50))
-
-SHIP_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'ship_img.png')).convert()
-SHIP_IMG = pygame.transform.scale(SHIP_IMG, (50, 50))
-
-HIT_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'hit.png')).convert()
-HIT_IMG = pygame.transform.scale(HIT_IMG, (WIDTH, HEIGHT))
-
-PAST_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'past.png')).convert()
-PAST_IMG = pygame.transform.scale(PAST_IMG, (WIDTH, HEIGHT))
-
-STAGE_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'stage.png')).convert()
-STAGE_IMG = pygame.transform.scale(STAGE_IMG, (WIDTH, HEIGHT))
-
-#музыка
-
-BACKGROUND_SOUND = pygame.mixer.music.load(os.path.join(game_folder, 'music', 'background_sound.mp3'))
-pygame.mixer.music.set_volume(0.2)
-WATER_SOUND = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'water_sound.wav'))
-BATTLE_SOUND = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'battle.wav'))
-
-
-class ButtonStart():
-    def __init__(self,x, y, width, height, messege):
-        self.image = pygame.Surface((width, height))
-        self.rect = pygame.Rect(x, y, width, height)
-        self.is_click = False
-        self.messege = messege
-    def draw(self):
-        pygame.draw.rect(screen, RED, self.rect)
-        pygame.draw.rect(screen, BLACK, self.rect, 2)
-        text1 = text_button.render(f'{self.messege}', False, BLACK)
-        text_rect = text1.get_rect(center=(self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2))
-        screen.blit(text1, text_rect)
-    def update(self, block):
-        if (not block):
-            mouse = pygame.mouse.get_pos()
-            click = pygame.mouse.get_pressed()
-            if (self.rect.collidepoint(mouse[0], mouse[1]) and click[0]):
-                self.is_click = True
-
-        
-class Button():
-    def __init__(self,x, y, width, height):
-        self.image = pygame.Surface((width, height))
-        self.rect = pygame.Rect(x, y, width, height)
-        self.flag = 0
-        self.color = WHITE
-        self.change = 0
-        self.stage = 1
-    def draw(self):
-        mouse = pygame.mouse.get_pos()
-        if (self.rect.collidepoint(mouse[0], mouse[1]) and self.stage != 2 and self.color == WHITE):
-            pygame.draw.rect(screen, LIGHTYELLOW, self.rect)
-        else:
-            if (self.color == LIGHTBLUE):
-                screen.blit(WATER_IMG, (self.rect.x, self.rect.y))
-            elif (self.color == BLACK):
-                screen.blit(SHIP_IMG, (self.rect.x, self.rect.y))
-            else:
-                pygame.draw.rect(screen, self.color, self.rect)
-    def update(self, block):
-        if (not block):
-            mouse = pygame.mouse.get_pos()
-            click = pygame.mouse.get_pressed()
-            if (self.stage == 2 and self.color == YELLOW):
-                self.color = WHITE
-            elif (self.rect.collidepoint(mouse[0], mouse[1]) and click[0] and self.change == 0):
-                if (self.stage == 1):
-                    self.flag = 1
-                    self.color = YELLOW
-                if (self.stage == 3):
-                    if (self.flag == 0):
-                        self.color = LIGHTBLUE
-                        self.change = NUMBER_TURNE
-                    else:
-                        self.color = BLACK
-                        self.change = -NUMBER_TURNE
-
-
-class Field():
-    def __init__(self, x, y, width, height):
-        self.image = pygame.Surface((width, height))
-        self.rect = pygame.Rect(x, y, width, height)
-        size = 50
-        self.ships = list()
-        for x in range(8):
-            self.ships.append(list())
-            for y in range(8):
-                ship = Button(self.rect.x + size * (x + 1), self.rect.y + size * (y + 1), size, size)
-                self.ships[x].append(ship)
-    def draw(self):
-        size = 50
-        for x in range(9):
-            for y in range(9):
-                coord = pygame.Rect(self.rect.x + size * x, self.rect.y + size * y, size, size)
-                if (y == 0 and x == 0):
-                    pygame.draw.rect(screen, LIGHTBLUE, coord)
-                    pygame.draw.rect(screen, MIDNIGTHBLUE, coord, 2)
-                if (y == 0 and x != 0):
-                    pygame.draw.rect(screen, LIGHTBLUE, coord)
-                    pygame.draw.rect(screen, MIDNIGTHBLUE, coord, 2)
-                    letter = chr(ord('A') + x - 1)
-                    text1 = main.render(f'{letter}', False, (0, 0, 0))
-                    screen.blit(text1, (self.rect.x + size * x + size / 3, self.rect.y + size * y + size / 4))
-                elif (x == 0 and y != 0):
-                    pygame.draw.rect(screen, LIGHTBLUE, coord)
-                    pygame.draw.rect(screen, MIDNIGTHBLUE, coord, 2)
-                    text1 = main.render(f'{y}', False, (0, 0, 0))
-                    screen.blit(text1, (self.rect.x + size * x + size / 3, self.rect.y + size * y + size / 4))
-                else:
-                    self.ships[x - 1][y - 1].draw()
-                    pygame.draw.rect(screen, MIDNIGTHBLUE, coord, 2)
-    def update(self, block):
-        if (not block):
-            for x in range(8):
-                for y in range(8):
-                    self.ships[x][y].update(block)  
-
-
-class Player():
-    def __init__(self, x, y, width, height):
-        self.field = Field(x, y, width, height)
-        self.cnt_ships = 0
-        self.stage = 1
-        self.hit = False
-        self.change = False
-    def update(self, block):
-        if (not block):
-            self.field.update(block)
-            self.change = False
-            self.hit = False
-            self.cnt_ships = 0
-            for x in range(8):
-                for y in range(8):
-                    if (self.field.ships[x][y].change == NUMBER_TURNE and self.field.ships[x][y].stage == 3):
-                        self.change = True
-                    if (self.field.ships[x][y].change == -NUMBER_TURNE and self.field.ships[x][y].stage == 3):
-                        self.change = True
-                        self.hit = True
-                        self.field.ships[x][y].flag = -1
-                    if (self.field.ships[x][y].flag == 1):
-                        self.cnt_ships += 1
-    def change_stage(self, new_stage):
-        self.stage = new_stage
-        for x in range(8):
-            for y in range(8):
-                self.field.ships[x][y].stage = self.stage
-    def draw(self, number):
-        self.field.draw()
-        text = main.render(f'Поле игрока {number}', False, (0, 0, 0))
-        text_rect = text.get_rect(center=(self.field.rect.x  + self.field.rect.width / 2, self.field.rect.y - 50))
-        screen.blit(text, text_rect)
-
 
 def game_play():
-    global NUMBER_TURNE
-    
+     
     NUMBER_TURNE = 0
 
     #создали игроков
@@ -222,6 +28,7 @@ def game_play():
     block = False
     last_move = 0
     while True:
+        print(player1.change, player2.change, player1.cnt_ships, player2.cnt_ships)
         clock.tick(FPS)
         # Ввод процесса (события)
         for event in pygame.event.get():
@@ -263,8 +70,8 @@ def game_play():
             player2.change_stage(2)
             
             # Обновление
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
             button_confirm.update(block)
 
             #Отрисовка
@@ -283,8 +90,8 @@ def game_play():
             player1.change_stage(2)
             player2.change_stage(2)
 
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
 
             block = True 
             button_confirm.is_click = False
@@ -309,8 +116,8 @@ def game_play():
             player2.change_stage(1)
 
             # Обновление
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
             button_confirm.update(block)
 
             #Отрисовка
@@ -329,8 +136,8 @@ def game_play():
             player1.change_stage(2)
             player2.change_stage(2)
 
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
 
             block = True
             button_confirm.is_click = False
@@ -351,8 +158,8 @@ def game_play():
             player2.change_stage(3)
 
             # Обновление
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
             button_confirm.update(block)
 
             #Отрисовка
@@ -375,8 +182,8 @@ def game_play():
             player1.change_stage(2)
             player2.change_stage(2)
 
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
 
             block = True
             player1.hit = False
@@ -414,8 +221,8 @@ def game_play():
             player2.change_stage(2)
             
             # Обновление
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
             button_confirm.update(block)
 
             #Отрисовка
@@ -437,8 +244,8 @@ def game_play():
             player1.change_stage(2)
             player2.change_stage(2)
 
-            player1.update(block)
-            player2.update(block)
+            player1.update(block, NUMBER_TURNE)
+            player2.update(block, NUMBER_TURNE)
 
             block = True
             player2.hit = False
@@ -493,8 +300,4 @@ def game_play():
             if (button_yes.is_click):
                 return 1
             if (button_no.is_click):
-                return 0     
-play = True
-while (play):
-    play = game_play()
-pygame.quit()
+                return 0
