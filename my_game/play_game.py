@@ -28,7 +28,6 @@ def game_play():
     block = False
     last_move = 0
     while True:
-        print(player1.change, player2.change, player1.cnt_ships, player2.cnt_ships)
         clock.tick(FPS)
         # Ввод процесса (события)
         for event in pygame.event.get():
