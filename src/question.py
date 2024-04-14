@@ -1,10 +1,11 @@
 import random
 
 class Question():
-    def __init__(self, cnt_vals, vals_name, units_of_measurement):
+    def __init__(self, cnt_vals, vals_name, units_of_measurement, description):
         self.cnt_vals = cnt_vals
         self.vals_name = vals_name
         self.units_of_measurement = units_of_measurement
+        self.description = description
     @staticmethod
     def round2(x): # rounds float to 2 digits
         return int(x * 100) * 0.01
@@ -52,7 +53,7 @@ class Question():
         variant_answer[right_answer_ind] = f"{Question.round2(vals[unknown_id])} {self.units_of_measurement[unknown_id]}"
         flag_right[right_answer_ind] = True
 
-        return [given, find, variant_answer, flag_right]
+        return [given, find, variant_answer, flag_right, self.description]
 
 
 

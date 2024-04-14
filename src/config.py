@@ -37,6 +37,7 @@ text_button = pygame.font.Font(os.path.join(game_folder, 'text', 'main.ttf'), 40
 title = pygame.font.Font(os.path.join(game_folder, 'text', 'title.ttf'), 80)
 subtitle = pygame.font.Font(os.path.join(game_folder, 'text', 'title.ttf'), 60)
 big = pygame.font.Font(os.path.join(game_folder, 'text', 'title.ttf'), 120)
+question_font = pygame.font.Font(os.path.join(game_folder, 'text', 'main.ttf'), 22)
 
 # изображения
 CARD_IMG = pygame.image.load(os.path.join(game_folder, 'img', 'card.png')).convert()
@@ -76,4 +77,4 @@ formulas = [[3, ['force F', 'mass m', 'acceleration a'], ['N', 'kg', 'm/c2'], "A
             [3, ['voltage V', 'electric current I', 'resistance R'], ['V', 'mA', 'kOhm'], "Electric cicrcuit includes a battery with voltage V and a resistor with resistance R."],
             [3, ['thermal energy Q', 'heat capacity c', 'temperature increase dT'], ['kJ', 'kJ/K', 'K'], "An object of heat capacity c is heated by dT K using Q energy."]]
 
-SLEEP_TIME = 0.1
+SLEEP_TIME = 1

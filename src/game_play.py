@@ -72,7 +72,7 @@ def game_play():
                 if (flag):
                     new_game.stage = "question"
                     random_formula = formulas[random.randint(0, len(formulas) - 1)]
-                    new_question = Question(random_formula[0], random_formula[1], random_formula[2])
+                    new_question = Question(random_formula[0], random_formula[1], random_formula[2], random_formula[3])
                     new_game.info_question = new_question.creat_question()
                     our_buttons.refresh([True, True, True, False, False, False, False, True, True]) #разблокированы только варианты ответов
                 else:

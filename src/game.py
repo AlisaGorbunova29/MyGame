@@ -168,8 +168,9 @@ class Game():
         self.block = False
         self.update()
 
-        draw_picture(BACKGROUND_IMG, True, self.info_question[0], BLACK, main, WIDTH/2, HEIGHT/8)
-        draw_picture(BACKGROUND_IMG, False, self.info_question[1], BLACK, main, WIDTH/2, HEIGHT/8 + 75)
+        draw_picture(BACKGROUND_IMG, True, self.info_question[0], BLACK, question_font, WIDTH/2, HEIGHT/10)
+        draw_picture(BACKGROUND_IMG, False, self.info_question[4], BLACK, question_font, WIDTH/2, HEIGHT/10 + 50)
+        draw_picture(BACKGROUND_IMG, False, self.info_question[1], BLACK, question_font, WIDTH/2, HEIGHT/10 + 100)
 
         our_buttons.draw([False, False, False, True, True, True, True, False, False], self.info_question[2], self.info_question[3])
 
