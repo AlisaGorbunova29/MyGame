@@ -87,7 +87,7 @@ def game_play():
                 new_game.physics()
                 if (our_buttons.button['first_variant'].is_click or our_buttons.button['second_variant'].is_click or our_buttons.button['third_variant'].is_click or our_buttons.button['forth_variant'].is_click):
                     new_game.stage = "move"
-                    time.sleep(2)
+                    time.sleep(SLEEP_TIME)
                     our_buttons.refresh([True]*9) #всё заблокировано
     
             case 'repeat':

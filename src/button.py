@@ -5,16 +5,16 @@ pygame.init()
 
 #класс для всех базовых кнопок
 class ButtonBasic():
-    def __init__(self,x, y, width, height, messege):
+    def __init__(self,x, y, width, height, message):
         self.image = pygame.Surface((width, height))
         self.rect = pygame.Rect(x, y, width, height)
         self.is_click = False
         self.is_block = False
-        self.messege = messege
+        self.message = message
     def draw(self):
         pygame.draw.rect(screen, RED, self.rect)
         pygame.draw.rect(screen, BLACK, self.rect, 2)
-        text1 = text_button.render(f'{self.messege}', False, BLACK)
+        text1 = text_button.render(f'{self.message}', False, BLACK)
         text_rect = text1.get_rect(center=(self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2))
         screen.blit(text1, text_rect)
     def update(self):
@@ -33,11 +33,11 @@ class ButtonVariant():
         self.rect = pygame.Rect(x, y, width, height)
         self.is_click = False
         self.is_block = False
-        self.messege = ""
+        self.message = ""
         self.flag = False
         self.color = WHITE
-    def draw(self, messege = [], flag = [], show = False):
-        self.messege = messege
+    def draw(self, message = [], flag = [], show = False):
+        self.message = message
         self.flag = flag
         mouse = pygame.mouse.get_pos()
         if (self.is_click):
@@ -55,7 +55,7 @@ class ButtonVariant():
 
         pygame.draw.rect(screen, self.color, self.rect)        
         pygame.draw.rect(screen, BLACK, self.rect, 2)
-        text1 = text_button.render(f'{self.messege}', False, BLACK)
+        text1 = text_button.render(f'{self.message}', False, BLACK)
         text_rect = text1.get_rect(center=(self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2))
         screen.blit(text1, text_rect)
     def update(self):
@@ -70,21 +70,21 @@ class ButtonVariant():
 
 class Button():
     def __init__(self):
-        self.button = { 'with_robot': ButtonBasic(150, 450, 350, 75, 'Игра с роботом'),
-                        'no_robot': ButtonBasic(600, 450, 350, 75, 'Игра без робота'),
-                        'confirm': ButtonBasic(350, 650, 350, 75, 'Подвердить ввод'), 
+        self.button = { 'with_robot': ButtonBasic(150, 450, 350, 75, 'Player vs Bot'),
+                        'no_robot': ButtonBasic(600, 450, 350, 75, 'Player vs Player'),
+                        'confirm': ButtonBasic(350, 650, 350, 75, 'Confirm input'), 
                         'first_variant': ButtonVariant(150, 250, 350, 75),
                         'second_variant': ButtonVariant(600, 250, 350, 75),
                         'third_variant': ButtonVariant(150, 450, 350, 75),
                         'forth_variant': ButtonVariant(600, 450, 350, 75),
-                        'yes': ButtonBasic(150, 650, 350, 75, 'ДА'),
-                        'no': ButtonBasic(600, 650, 350, 75, 'НЕТ')}
+                        'yes': ButtonBasic(150, 650, 350, 75, 'YES'),
+                        'no': ButtonBasic(600, 650, 350, 75, 'NO')}
     def refresh(self, block):
         number = 0
         for i in self.button.values():
             i.refresh(block[number])
             number += 1
-    def draw(self, draw, messege=[], flag=[]):
+    def draw(self, draw, message=[], flag=[]):
         number = 0
         show = False
         if (self.button['first_variant'].is_click or self.button['second_variant'].is_click or self.button['third_variant'].is_click or self.button['forth_variant'].is_click):
@@ -94,7 +94,7 @@ class Button():
                 if (number < 3 or number > 6):
                     i.draw()
                 else:
-                    i.draw(messege[number - 3], flag[number - 3], show)
+                    i.draw(message[number - 3], flag[number - 3], show)
             number += 1
     def update(self):
         for i in self.button.values():

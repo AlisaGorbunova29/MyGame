@@ -44,7 +44,7 @@ class Player():
                 self.field.button[x][y].stage = self.stage
     def draw(self, number):
         self.field.draw()
-        text = main.render(f'Поле игрока {number}', False, (0, 0, 0))
+        text = main.render(f'Player {number} field', False, (0, 0, 0))
         text_rect = text.get_rect(center=(self.field.rect.x  + self.field.rect.width / 2, self.field.rect.y - 50))
         screen.blit(text, text_rect)
     def clear(self):

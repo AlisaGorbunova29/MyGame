@@ -52,7 +52,7 @@ class Game():
         self.update()
 
         #отрисовка
-        draw_picture(CARD_IMG, True, 'Игра "Морской бой"', BLACK, title, WIDTH / 2 + 25, HEIGHT /2 - 50)
+        draw_picture(CARD_IMG, True, 'Naval Quiz"', BLACK, title, WIDTH / 2 + 25, HEIGHT /2 - 50)
         our_buttons.draw([True, True, False, False, False, False, False, False, False])
         pygame.display.flip()
 
@@ -83,12 +83,12 @@ class Game():
         self.block = True
         self.update()
         
-        draw_picture(STAGE_IMG, True, 'НЕКОРРЕКТНЫЙ ВВОД', BLACK, subtitle, WIDTH / 2, HEIGHT /2 - 100)
-        draw_picture(STAGE_IMG, False, 'ПОПРОБУЙТЕ ЕЩЁ РАЗ', BLACK, subtitle, WIDTH / 2, HEIGHT /2)
+        draw_picture(STAGE_IMG, True, 'INCORRECT INPUT', BLACK, subtitle, WIDTH / 2, HEIGHT /2 - 100)
+        draw_picture(STAGE_IMG, False, 'TRY AGAIN', BLACK, subtitle, WIDTH / 2, HEIGHT /2)
 
         pygame.display.flip()
 
-        time.sleep(2)
+        time.sleep(SLEEP_TIME)
 
     def pause(self):
         #обновления
@@ -101,15 +101,15 @@ class Game():
         
         #отрисовка
         if (self.stage == "before game"):
-            draw_picture(STAGE_IMG, True, 'ИГРА НАЧАЛАСЬ!', BLACK, title, WIDTH / 2, HEIGHT /2)
+            draw_picture(STAGE_IMG, True, 'START!', BLACK, title, WIDTH / 2, HEIGHT /2)
         elif (self.stage == "before placement" and self.with_robot):
-            draw_picture(STAGE_IMG, True, 'РАССТАНОВКА КОРАБЛЕЙ НА ПОЛЕ', BLACK, subtitle, WIDTH / 2, HEIGHT /2)
+            draw_picture(STAGE_IMG, True, 'SHIPS PLACEMENT', BLACK, subtitle, WIDTH / 2, HEIGHT /2)
         else:
-            draw_picture(STAGE_IMG, True, f'ИГРОК {self.now_play + 1}', BLACK, subtitle, WIDTH / 2, HEIGHT /2 - 100)
-            draw_picture(STAGE_IMG, False, 'РАССТАНОВКА КОРАБЛЕЙ НА ПОЛЕ', BLACK, subtitle, WIDTH / 2, HEIGHT /2)
+            draw_picture(STAGE_IMG, True, f'PLAYER {self.now_play + 1}', BLACK, subtitle, WIDTH / 2, HEIGHT /2 - 100)
+            draw_picture(STAGE_IMG, False, 'SHIP PLACEMENT', BLACK, subtitle, WIDTH / 2, HEIGHT /2)
 
         pygame.display.flip()
-        time.sleep(2)
+        time.sleep(SLEEP_TIME)
 
     def move(self):
         self.block = False
@@ -127,7 +127,7 @@ class Game():
         #Переворачивание экрана
         pygame.display.flip()
         if (self.with_robot and self.now_play == 1):
-            time.sleep(1)
+            time.sleep(SLEEP_TIME / 2)
          
         #Анализ      
         i = self.now_play
@@ -146,17 +146,17 @@ class Game():
         self.player[1].clear()
         
         if(self.kill_now):
-            draw_picture(HIT_IMG, True, 'УТОПИЛ!', CORNSILK, big, WIDTH / 2, HEIGHT /2)
+            draw_picture(HIT_IMG, True, 'SUNK!', CORNSILK, big, WIDTH / 2, HEIGHT /2)
             BATTLE_SOUND.play()
         elif (self.hit_now):
-            draw_picture(HIT_IMG, True, 'ПОПАЛ!', CORNSILK, big, WIDTH / 2, HEIGHT /2)
+            draw_picture(HIT_IMG, True, 'HIT!', CORNSILK, big, WIDTH / 2, HEIGHT /2)
             BATTLE_SOUND.play()
         else:
-            draw_picture(PAST_IMG, True, 'МИМО!', CORNSILK, big, WIDTH / 2, HEIGHT /2)
+            draw_picture(PAST_IMG, True, 'MISS!', CORNSILK, big, WIDTH / 2, HEIGHT /2)
             WATER_SOUND.play()
 
         pygame.display.flip()
-        time.sleep(2.7)
+        time.sleep(SLEEP_TIME * 1.35)
         
         if (not self.hit_now):
             self.now_play = (self.now_play + 1) % 2
@@ -181,26 +181,26 @@ class Game():
             or (our_buttons.button['forth_variant'].color == RED and our_buttons.button['forth_variant'].is_click)):
             self.now_play = (self.now_play + 1) % 2
             WRONG_ANSWER.play()
-            time.sleep(2)
+            time.sleep(SLEEP_TIME)
         if ((our_buttons.button['first_variant'].color == GREEN and our_buttons.button['first_variant'].is_click) 
             or (our_buttons.button['second_variant'].color == GREEN  and our_buttons.button['second_variant'].is_click)
             or (our_buttons.button['third_variant'].color == GREEN and our_buttons.button['third_variant'].is_click)
             or (our_buttons.button['forth_variant'].color == GREEN and our_buttons.button['forth_variant'].is_click)):
             RIGHT_ANSWER.play()
-            time.sleep(2)
+            time.sleep(SLEEP_TIME)
 
     def end(self):
         self.block = False
         self.update()
         
-        draw_picture(CARD_IMG, True, 'Победил робот', BLACK, title, WIDTH / 2, HEIGHT /2)
+        draw_picture(CARD_IMG, True, 'Bot has won', BLACK, title, WIDTH / 2, HEIGHT /2)
         if (self.with_robot and self.now_play % 2 + 1 == 2):
-            draw_picture(CARD_IMG, True, 'Победил робот', BLACK, title, WIDTH / 2, HEIGHT /2)
+            draw_picture(CARD_IMG, True, 'Bot has won', BLACK, title, WIDTH / 2, HEIGHT /2)
         elif (self.with_robot and self.now_play % 2 + 1 == 1):
-            draw_picture(CARD_IMG, True, 'Победил игрок', BLACK, title, WIDTH / 2, HEIGHT /2)
+            draw_picture(CARD_IMG, True, 'Player has won', BLACK, title, WIDTH / 2, HEIGHT /2)
         else:
-            draw_picture(CARD_IMG, True, f'Победил игрок {self.now_play % 2 + 1}', BLACK, title, WIDTH / 2, HEIGHT /2)
-        draw_picture(CARD_IMG, False, f'Хотите сыграть ещё раз?', BLACK, subtitle, WIDTH / 2, HEIGHT /2 + 200)
+            draw_picture(CARD_IMG, True, f'Player {self.now_play % 2 + 1} has won', BLACK, title, WIDTH / 2, HEIGHT /2)
+        draw_picture(CARD_IMG, False, f'Do you want to play again?', BLACK, subtitle, WIDTH / 2, HEIGHT /2 + 200)
         our_buttons.draw([False, False, False, False, False, False, False, True, True])
         
         pygame.display.flip()
