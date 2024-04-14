@@ -16,7 +16,7 @@ class Field():
         for x in range(self.cnt):
             self.button.append(list())
             for y in range(self.cnt):
-                button = Button(self.rect.x + self.size * (x + 1), self.rect.y + self.size * (y + 1), self.size, self.size)
+                button = ButtonField(self.rect.x + self.size * (x + 1), self.rect.y + self.size * (y + 1), self.size, self.size)
                 self.button[x].append(button)
     def draw(self):
         for x in range(self.cnt + 1):

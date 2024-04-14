@@ -4,14 +4,14 @@ from src.img import *
 
 pygame.init()
 
-class Button():
+class ButtonField():
     def __init__(self,x, y, width, height):
         self.image = pygame.Surface((width, height))
         self.rect = pygame.Rect(x, y, width, height)
         self.flag = 0
         self.color = WHITE
         self.change = 0
-        self.stage = 1 #1 - расстановка,  2 - блокировка, 3 - бой
+        self.stage = 2 #1 - расстановка,  2 - блокировка, 3 - бой
     def clear(self):
         self.flag = 0
         self.color = WHITE

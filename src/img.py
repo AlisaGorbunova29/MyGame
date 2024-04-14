@@ -11,4 +11,3 @@ def draw_picture(img_background, draw_background , text = 0, color_text = 0, fon
         text = font.render(text, False, color_text)
         text_rect = text.get_rect(center=(coord_center_x, coord_center_y))
         screen.blit(text, text_rect)
-

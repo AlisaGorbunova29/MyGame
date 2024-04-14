@@ -19,6 +19,7 @@ BLACK = (0, 0, 0)
 LIGHTCORAL = (240, 128, 128)
 RED = (255, 0, 0)
 CORNSILK = (255, 248, 220)
+GREEN = (0, 128, 0)
 
 #путь к файлам
 game_folder = os.path.dirname(__file__)
@@ -66,4 +67,8 @@ BACKGROUND_SOUND = pygame.mixer.music.load(os.path.join(game_folder, 'music', 'b
 pygame.mixer.music.set_volume(0.2)
 WATER_SOUND = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'water_sound.wav'))
 BATTLE_SOUND = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'battle.wav'))
+RIGHT_ANSWER = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'right_answer.mp3'))
+WRONG_ANSWER = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'wrong_answer.mp3'))
 
+#формулы 
+formulas = [[3, ['силы F', 'масса m', 'ускорение a'], ['H', 'кг', 'м/c']], [3, ['сила F', 'коэффицент упругости', 'удлиненние x'], ['H', 'Н/м', 'м']]]
