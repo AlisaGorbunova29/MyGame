@@ -7,10 +7,16 @@ class Question():
         self.units_of_measurement = units_of_measurement
         self.description = description
     @staticmethod
-    def round2(x): # rounds float to 2 digits
-        return int(x * 100) * 0.01
+    def round(x):
+        s = str(x)
+        i = s.find(".")
+        if i != -1 and len(s) > 6:
+                return s[:i+2]
+        return s
+
+    
     def creat_question(self):
-        vals = [random.randint(2, 10) for i in range(self.cnt_vals)]
+        vals = [random.randint(2, 8) * 10**(random.randint(0,1) * 2 - 1) for i in range(self.cnt_vals)]
         vals[0] = vals[1]
         for i in range(2, self.cnt_vals):
             vals[0] *= vals[i]
@@ -23,7 +29,7 @@ class Question():
         random.shuffle(randpermn) # случайная перестановка
         given = f"Given:"
         for i in randpermn:
-            given = f"{given} {self.vals_name[i]} = {vals[i]} {self.units_of_measurement[i]}, "
+            given = f"{given} {self.vals_name[i]} = {Question.round(vals[i])} {self.units_of_measurement[i]}, "
         given = given[:-2] + "."
         find = f"Find {self.vals_name[unknown_id]}."
         
@@ -40,17 +46,15 @@ class Question():
             wrong_anss[1] = vals[unknown_id] * vals[index]**2
             wrong_anss[2] = vals[unknown_id] * vals[index]**2 * 10**(random.randint(0,1) * 2 - 1)
             wrong_anss[3] = 1 / vals[unknown_id]
-        for wa in wrong_anss:
-            wa = Question.round2(wa)
 
         randperm4 = [0,1,2,3]
         random.shuffle(randperm4) # случайная перестановка
         
-        variant_answer = [f"{wrong_anss[randperm4[i]]} {self.units_of_measurement[unknown_id]}" for i in range(4)] # неправильные ответы в случ. порядке
+        variant_answer = [f"{Question.round(wrong_anss[randperm4[i]])} {self.units_of_measurement[unknown_id]}" for i in range(4)] # неправильные ответы в случ. порядке
         flag_right = [False] * 4
 
         right_answer_ind =  random.randint(0, 3)
-        variant_answer[right_answer_ind] = f"{Question.round2(vals[unknown_id])} {self.units_of_measurement[unknown_id]}"
+        variant_answer[right_answer_ind] = f"{Question.round(vals[unknown_id])} {self.units_of_measurement[unknown_id]}"
         flag_right[right_answer_ind] = True
 
         return [given, find, variant_answer, flag_right, self.description]

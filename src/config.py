@@ -72,7 +72,7 @@ RIGHT_ANSWER = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'right_answ
 WRONG_ANSWER = pygame.mixer.Sound(os.path.join(game_folder, 'music', 'wrong_answer.mp3'))
 
 #формулы 
-formulas = [[3, ['force F', 'mass m', 'acceleration a'], ['N', 'kg', 'm/c2'], "An onject of mass m moves straight under the constant force F."],
+formulas = [[3, ['force F', 'mass m', 'acceleration a'], ['N', 'kg', 'm/c2'], "An object of mass m moves straight under the constant force F."],
             [3, ['force F', 'elasticity coefficient', 'extention x'], ['N', 'kN/m', 'mm'], "A spring is extended by x under the constant force F."],
             [3, ['voltage V', 'electric current I', 'resistance R'], ['V', 'mA', 'kOhm'], "Electric cicrcuit includes a battery with voltage V and a resistor with resistance R."],
             [3, ['thermal energy Q', 'heat capacity c', 'temperature increase dT'], ['kJ', 'kJ/K', 'K'], "An object of heat capacity c is heated by dT K using Q energy."]]
