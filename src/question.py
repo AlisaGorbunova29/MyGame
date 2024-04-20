@@ -16,7 +16,7 @@ class Question():
 
     
     def creat_question(self):
-        vals = [random.randint(2, 8) * 10**(random.randint(0,1) * 2 - 1) for i in range(self.cnt_vals)]
+        vals = [random.randint(2, 8) * 10**(random.randint(-1,1)) for i in range(self.cnt_vals)]
         vals[0] = vals[1]
         for i in range(2, self.cnt_vals):
             vals[0] *= vals[i]
